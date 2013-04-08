@@ -39,7 +39,7 @@ class HomePageTest(TestCase):
         self.assertEqual(new_item.text, 'A new list item')
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world')
+        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
 
 
 class ListViewTest(TestCase):
@@ -49,7 +49,7 @@ class ListViewTest(TestCase):
         Item.objects.create(text='itemey 2')
 
         client = Client()
-        response = client.get('/lists/the-only-list-in-the-world')
+        response = client.get('/lists/the-only-list-in-the-world/')
 
         self.assertIn('itemey 1', response.content)
         self.assertIn('itemey 2', response.content)
