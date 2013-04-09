@@ -87,7 +87,6 @@ class ListViewTest(TestCase):
 
 
 
-
 class ListAndItemModelsTest(TestCase):
 
     def test_saving_and_retrieving_items(self):
