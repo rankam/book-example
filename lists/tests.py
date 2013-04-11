@@ -1,6 +1,6 @@
 from django.core.urlresolvers import resolve
 from django.template.loader import render_to_string
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.http import HttpRequest
 
 from lists.models import Item
@@ -21,17 +21,6 @@ class HomePageTest(TestCase):
         self.assertMultiLineEqual(response.content, expected_html)
 
 
-    def test_home_page_displays_all_list_items(self):
-        Item.objects.create(text='itemey 1')
-        Item.objects.create(text='itemey 2')
-
-        request = HttpRequest()
-        response = home_page(request)
-
-        self.assertIn('itemey 1', response.content)
-        self.assertIn('itemey 2', response.content)
-
-
     def test_home_page_only_saves_items_when_necessary(self):
         request = HttpRequest()
         home_page(request)
@@ -50,8 +39,21 @@ class HomePageTest(TestCase):
         self.assertEqual(new_item.text, 'A new list item')
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world')
 
+
+class ListViewTest(TestCase):
+
+    def test_list_view_displays_all_items(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+
+        client = Client()
+        response = client.get('/lists/the-only-list-in-the-world')
+
+        self.assertIn('itemey 1', response.content)
+        self.assertIn('itemey 2', response.content)
+        self.assertTemplateUsed(response, 'list.html')
 
 
 
