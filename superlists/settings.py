@@ -1,6 +1,7 @@
-# Django settings for mysite project.
+from os import path
+# Django settings for superlists project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -9,10 +10,12 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+PROJECT_ROOT = path.join(path.dirname(__file__), '..')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': path.abspath(path.join(PROJECT_ROOT, '../database/database.sqlite')),
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -56,7 +59,10 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = path.abspath(path.join(PROJECT_ROOT, '../static'))
+
+# This next setting is needed when DEBUG=False
+ALLOWED_HOSTS = ['localhost']
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -97,10 +103,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'mysite.urls'
+ROOT_URLCONF = 'superlists.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'mysite.wsgi.application'
+WSGI_APPLICATION = 'superlists.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -119,6 +125,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'lists',
+    'functional_tests',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -149,3 +157,4 @@ LOGGING = {
         },
     }
 }
+

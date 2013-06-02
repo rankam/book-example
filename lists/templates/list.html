@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header_text %}Your To-Do list{% endblock %}
+
+{% block form %}
+    <form method="POST" action="/lists/{{ list.id }}/new_item" >
+        <input id="id_new_item" name="item_text" placeholder="Enter a to-do item" />
+        {% csrf_token %}
+    </form>
+{% endblock %}
+
+{% block table %}
+    <table id="id_list_table">
+        {% for item in list.item_set.all %}
+            <tr><td>{{ forloop.counter }}: {{ item.text }}</td></tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
